@@ -7,10 +7,10 @@ src/main/java/br/com/fiap2espa/
 │
 ├── controller/          # Porta de entrada (API)
 ├── service/             # Regras de negócio e fluxos
-├── repository/          # Comunicação com o Banco (JPA)
 ├── dto/                 # Objetos de transferência (JSON)
 └── domain/              # O Domínio do seu sistema
     ├── model/           # ENTIDADES (@Entity)
     ├── enums/           # Enumerações
-    └── vo/              # Value Objects (@Embeddable)
+    ├── vo/              # Value Objects (@Embeddable)
+    └── repository/      # Comunicação com o Banco (JPA)
 ```
