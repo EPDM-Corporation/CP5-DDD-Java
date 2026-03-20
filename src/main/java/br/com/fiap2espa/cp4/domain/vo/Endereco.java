@@ -2,5 +2,12 @@
 
 package br.com.fiap2espa.cp4.domain.vo;
 
-public record Endereco() {
-}
+public record Endereco(
+        String rua,
+        String numero,
+        String complemento,
+        String bairro,
+        String cidade,
+        String uf,
+        String cep
+        ) { }
