@@ -4,9 +4,15 @@ import br.com.fiap2espa.cp4.domain.enums.Qualificacao;
 import br.com.fiap2espa.cp4.domain.enums.Tipo;
 import br.com.fiap2espa.cp4.domain.vo.Endereco;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Atendente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,68 +23,9 @@ public class Atendente {
     private String telefone;
 
     @Embedded
-    private Endereco endereco;
+    private Endereco endereco;  //vo
 
     @Enumerated(EnumType.STRING)
     private Tipo tipo;  //Enumeração
 
-    public Atendente() {}
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
 }
