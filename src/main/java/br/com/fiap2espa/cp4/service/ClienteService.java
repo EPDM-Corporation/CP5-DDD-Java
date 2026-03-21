@@ -20,4 +20,6 @@ public class ClienteService {
     public List<Cliente> listarTodos(){
         return clienteRepository.findAll();
     }
+
+    //Adicionar depois a lógica para poder dar PostMapping("/{id}/converter")
 }

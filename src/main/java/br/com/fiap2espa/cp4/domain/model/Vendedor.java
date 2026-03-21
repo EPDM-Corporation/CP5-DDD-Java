@@ -5,7 +5,6 @@ import br.com.fiap2espa.cp4.domain.vo.Endereco;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
