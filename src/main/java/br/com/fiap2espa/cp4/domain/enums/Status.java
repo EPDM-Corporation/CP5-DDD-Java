@@ -6,5 +6,6 @@ package br.com.fiap2espa.cp4.domain.enums;
 // Área De Interesse
 // Status
 
-public enum Enumeracoes { //Tipar as regras de negócio
+public enum Status { //Tipar as regras de negócio
+    EM_ATENDIMENTO, CONCLUIDO, LATENTE;
 }
