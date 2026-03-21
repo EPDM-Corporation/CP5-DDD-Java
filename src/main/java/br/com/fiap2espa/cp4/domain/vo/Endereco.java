@@ -2,6 +2,10 @@
 
 package br.com.fiap2espa.cp4.domain.vo;
 
+
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public record Endereco(
         String rua,
         String numero,
