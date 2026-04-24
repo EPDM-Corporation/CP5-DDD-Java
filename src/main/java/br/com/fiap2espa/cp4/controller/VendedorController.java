@@ -1,6 +1,7 @@
 package br.com.fiap2espa.cp4.controller;
 
-import br.com.fiap2espa.cp4.dto.VendedorDTO;
+import br.com.fiap2espa.cp4.dto.VendedorRequestDTO;
+import br.com.fiap2espa.cp4.dto.VendedorResponseDTO;
 import br.com.fiap2espa.cp4.service.VendedorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
@@ -17,21 +18,47 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RequiredArgsConstructor
 public class VendedorController {
 
-    private final VendedorService vendedorService;
+    private final VendedorService service;
 
     @PostMapping
-    public ResponseEntity<EntityModel<VendedorDTO>> cadastrar(@RequestBody VendedorDTO vendedor) {
-        VendedorDTO dto = vendedorService.salvarVendedor(vendedor);
+    public ResponseEntity<EntityModel<VendedorResponseDTO>> cadastrar(@RequestBody VendedorRequestDTO request) {
+        VendedorResponseDTO dto = service.salvar(request);
+
         return ResponseEntity.ok(EntityModel.of(dto,
-                linkTo(methodOn(VendedorController.class).listar()).withRel("lista")));
+                linkTo(methodOn(VendedorController.class).buscar(dto.id())).withSelfRel()));
     }
 
     @GetMapping
-    public ResponseEntity<CollectionModel<EntityModel<VendedorDTO>>> listar() {
-        List<EntityModel<VendedorDTO>> vendedores = vendedorService.listarVendedores().stream()
-                .map(EntityModel::of)
+    public ResponseEntity<CollectionModel<EntityModel<VendedorResponseDTO>>> listar() {
+        List<EntityModel<VendedorResponseDTO>> lista = service.listar().stream()
+                .map(dto -> EntityModel.of(dto,
+                        linkTo(methodOn(VendedorController.class).buscar(dto.id())).withSelfRel()))
                 .toList();
-        return ResponseEntity.ok(CollectionModel.of(vendedores,
+
+        return ResponseEntity.ok(CollectionModel.of(lista,
                 linkTo(methodOn(VendedorController.class).listar()).withSelfRel()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EntityModel<VendedorResponseDTO>> buscar(@PathVariable Long id) {
+        VendedorResponseDTO dto = service.buscar(id);
+
+        return ResponseEntity.ok(EntityModel.of(dto,
+                linkTo(methodOn(VendedorController.class).buscar(id)).withSelfRel()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<EntityModel<VendedorResponseDTO>> atualizar(@PathVariable Long id,
+                                                                      @RequestBody VendedorRequestDTO request) {
+        VendedorResponseDTO dto = service.atualizar(id, request);
+
+        return ResponseEntity.ok(EntityModel.of(dto,
+                linkTo(methodOn(VendedorController.class).buscar(id)).withSelfRel()));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
