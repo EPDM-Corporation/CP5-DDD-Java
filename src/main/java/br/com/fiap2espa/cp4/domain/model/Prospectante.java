@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "tb_prospectante")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

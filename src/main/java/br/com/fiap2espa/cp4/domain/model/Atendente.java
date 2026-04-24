@@ -1,6 +1,5 @@
 package br.com.fiap2espa.cp4.domain.model;
 
-import br.com.fiap2espa.cp4.domain.enums.Qualificacao;
 import br.com.fiap2espa.cp4.domain.enums.Tipo;
 import br.com.fiap2espa.cp4.domain.vo.Endereco;
 import jakarta.persistence.*;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
+@Table(name = "tb_atendente")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +26,7 @@ public class Atendente {
     private Endereco endereco;  //vo
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_atendente")
     private Tipo tipo;  //Enumeração
 
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "tb_usuario")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +18,7 @@ public class Usuario {
     private Long id;
     private String nome;
     private String email;
+    private String senha;
     private String telefone;
 
     @Embedded
