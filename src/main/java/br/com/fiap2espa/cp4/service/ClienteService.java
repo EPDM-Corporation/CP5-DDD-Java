@@ -13,39 +13,59 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ClienteService {
-    private final ClienteRepository clienteRepository;
 
-    public ClienteResponseDTO salvar(ClienteRequestDTO request) {
-        Cliente cliente = new Cliente();
-        cliente.setNome(request.nome());
-        cliente.setCpf(request.cpf());
-        cliente.setEmail(request.email());
-        cliente.setTelefone(request.telefone());
-        cliente.setEndereco(request.endereco());
-        cliente.setStatus(Status.EM_ATENDIMENTO); // Status inicial padrão
+    private final ClienteRepository repository;
 
-        Cliente salvo = clienteRepository.save(cliente);
-        return converterParaResponseDTO(salvo);
+    public ClienteResponseDTO salvar(ClienteRequestDTO dto) {
+        Cliente c = new Cliente();
+        c.setNome(dto.nome());
+        c.setCpf(dto.cpf());
+        c.setEmail(dto.email());
+        c.setTelefone(dto.telefone());
+        c.setEndereco(dto.endereco());
+        c.setStatus(Status.EM_ATENDIMENTO);
+
+        return toDTO(repository.save(c));
     }
 
     public List<ClienteResponseDTO> listarTodos() {
-        return clienteRepository.findAll().stream()
-                .map(this::converterParaResponseDTO)
+        return repository.findAll().stream()
+                .map(this::toDTO)
                 .toList();
     }
 
     public ClienteResponseDTO buscar(Long id) {
-        Cliente cliente = clienteRepository.findById(id)
+        Cliente c = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-        return converterParaResponseDTO(cliente);
+        return toDTO(c);
     }
 
-    private ClienteResponseDTO converterParaResponseDTO(Cliente cliente) {
+    public ClienteResponseDTO atualizar(Long id, ClienteRequestDTO dto) {
+        Cliente c = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        c.setNome(dto.nome());
+        c.setCpf(dto.cpf());
+        c.setEmail(dto.email());
+        c.setTelefone(dto.telefone());
+        c.setEndereco(dto.endereco());
+
+        return toDTO(repository.save(c));
+    }
+
+    public void deletar(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Cliente não encontrado");
+        }
+        repository.deleteById(id);
+    }
+
+    private ClienteResponseDTO toDTO(Cliente c) {
         return new ClienteResponseDTO(
-                cliente.getId(),
-                cliente.getNome(),
-                cliente.getEmail(),
-                cliente.getStatus().name()
+                c.getId(),
+                c.getNome(),
+                c.getEmail(),
+                c.getStatus().name()
         );
     }
 }
