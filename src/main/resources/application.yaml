@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: sistema-gestao-cp5
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XEPDB1
+    username: RM561189
+    password: SenhaForte123
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      # 'update' cria as tabelas automaticamente (tb_cliente, tb_vendedor, etc)
+      # se elas não existirem no banco.
+      ddl-auto: update
+    show-sql: true # mostra os comandos SQL no console para debug
+    properties:
+      hibernate:
+        format_sql: true
