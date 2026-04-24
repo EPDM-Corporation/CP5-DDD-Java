@@ -1,12 +1,16 @@
 package br.com.fiap2espa.cp4.controller;
 
-import br.com.fiap2espa.cp4.domain.model.Vendedor;
+import br.com.fiap2espa.cp4.dto.VendedorDTO;
 import br.com.fiap2espa.cp4.service.VendedorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/vendedores")
@@ -16,12 +20,18 @@ public class VendedorController {
     private final VendedorService vendedorService;
 
     @PostMapping
-    public ResponseEntity<Vendedor> cadastrar(@RequestBody Vendedor vendedor) {
-        return ResponseEntity.ok(vendedorService.salvarVendedor(vendedor));
+    public ResponseEntity<EntityModel<VendedorDTO>> cadastrar(@RequestBody VendedorDTO vendedor) {
+        VendedorDTO dto = vendedorService.salvarVendedor(vendedor);
+        return ResponseEntity.ok(EntityModel.of(dto,
+                linkTo(methodOn(VendedorController.class).listar()).withRel("lista")));
     }
 
     @GetMapping
-    public ResponseEntity<List<Vendedor>> listar() {
-        return ResponseEntity.ok(vendedorService.listarVendedores());
+    public ResponseEntity<CollectionModel<EntityModel<VendedorDTO>>> listar() {
+        List<EntityModel<VendedorDTO>> vendedores = vendedorService.listarVendedores().stream()
+                .map(EntityModel::of)
+                .toList();
+        return ResponseEntity.ok(CollectionModel.of(vendedores,
+                linkTo(methodOn(VendedorController.class).listar()).withSelfRel()));
     }
 }
